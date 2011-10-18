@@ -120,5 +120,11 @@ namespace Atos.Web.Mobile.Trends.Controllers
 
             return new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet, Data = answers };
         }
+
+        public ActionResult Static()
+        {
+            return Redirect("/default.html");
+        }
+
     }
 }
