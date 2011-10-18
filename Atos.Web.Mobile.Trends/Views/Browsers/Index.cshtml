@@ -1,0 +1,59 @@
+@model IEnumerable<Atos.Web.Mobile.Trends.Models.Browser>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            Name
+        </th>
+        <th>
+            Version
+        </th>
+        <th>
+            Platform
+        </th>
+        <th>
+            ClientIP
+        </th>
+        <th>
+            TimeStamp
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+        <td>
+			@item.Name
+        </td>
+        <td>
+			@item.Version
+        </td>
+        <td>
+			@item.Platform
+        </td>
+        <td>
+			@item.ClientIP
+        </td>
+        <td>
+			@String.Format("{0:g}", item.TimeStamp)
+        </td>
+    </tr>
+}
+
+</table>
+
+

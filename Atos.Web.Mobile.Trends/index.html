@@ -1,0 +1,181 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <title>Atos Competence Bazar - Trends</title>
+        <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+	    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
+        <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	    <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
+        <script src="scripts/chart.js"></script>
+    </head>
+    <body>
+    <div data-role="page" id="vote">
+        <header data-role="header" data-theme="b"><h1>Geef uw mening</h1></header>
+        <article data-role="content" data-theme="d">
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup" id="ListOfAnswers">
+    	            <legend class="question"></legend>
+         	        <!--<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" /><label for="radio-choice-1">Cloud</label>
+
+         	        <input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
+         	        <label for="radio-choice-2">SOA</label>
+
+         	        <input type="radio" name="radio-choice-1" id="radio-choice-3" value="choice-3"  />
+         	        <label for="radio-choice-3">Mobile devices</label>
+
+         	        <input type="radio" name="radio-choice-1" id="radio-choice-4" value="choice-4"  />
+         	        <label for="radio-choice-4">BPM</label>-->
+                    <span class="ErrorSummary"></span>
+                </fieldset>
+            </div>
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup" class="ui-grid-b">
+                    <legend></legend>
+                    <a href="#results" data-role="button" data-theme="b" id="Vote">Stem</a>
+                    <!--<button type="submit" data-theme="b">Stem</button>-->
+                </fieldset>
+            </div>
+        </article>
+        <footer data-role="footer" class="footer-docs" data-theme="b"><small>&nbsp;Copyright &copy; 2011 - Atos&trade;. All rights reserved.</small></footer>
+    </div>
+    <div data-role="page" id="results">
+        <header data-role="header" data-theme="b"><h1>Belangrijkste trends voor 2012</h1></header>
+        <article data-role="content" data-theme="d">
+            <!--<div data-role="fieldcontain">-->
+                <fieldset data-role="controlgroup">
+                    <legend class="question"></legend>
+                    <table id="result">
+                    
+                    </table>
+                    
+                    <!--<canvas id="chart" height="320" width="480"></canvas>
+                    <dl>
+                        <dt style="color: #0DA068;">Cloud</dt>
+                        <dd>18 stemmen (19%)</dd>
+                        <dt style="color: #194E9C;">SOA</dt>
+                        <dd>13 stemmen (13%)</dd>
+                        <dt style="color:#ED9C13;">Mobile devices</dt>
+                        <dd>34 stemmen (35%)</dd>
+                        <dt style="color:#ED5713;">BPM</dt>
+                        <dd>32 stemmen (33%)</dd>
+                    </dl>-->
+                </fieldset>
+                <span class="ErrorSummary"></span>
+            <!--</div>-->
+        </article>
+        <footer data-role="footer" class="footer-docs" data-theme="b"><small>&nbsp;Copyright &copy; 2011 - Atos&trade;. All rights reserved.</small></footer>
+    </div>
+    <script>
+         function GetQuestion() {
+             //From here on it is all jQuery
+             //Using a Ajax Post action to avoid security issues with Get (which is very limited due to possible cross domain scripting!)
+             $.ajax({
+                 //HTTP request type
+                 type: "POST",
+                 //URI endpoint to call
+                 url: "/Questions/GetQuestion/",
+                 contentType: 'application/json; charset=utf-8',
+                 data: "{ id: 1 }",
+                 //type of data structure we want to get back
+                 dataType: "json",
+                 // in case of success fire this call back function (remember Ajax is a sync, so set up your call back function to handle the response once you get it.
+                 success: function (data) {
+                     $('.question').html(data[0].Question.Description.toString());
+                     $(data).each(function (data) { $('#ListOfAnswers').append('<input type="radio" name="radio-choice-1" id="radio-choice-' + this.Id + '" value="' + this.Id + '" /><label for="radio-choice-' + this.Id + '">' + this.Description + '</label>'); });
+                    
+                 },
+                 //in case of any error fire this call back function
+                 error: function (req, status, error) {
+                     //set the text of the predefined div with id ErrorSummary to the values of the error response we got
+                     // req = request summary as HTTP request type and endpoint URI
+                     // status = HTTP error code
+                     // error = error description
+                     // As you can see I use jQuery chaining to also define the 2 css attributes for the div to set it visible and with a background color
+                     alert('The request ' + req.toString() + ' went wrong: ' + status.toString());
+                     $('.ErrorSummary').text('The request ' + req.toString() + ' went wrong: ' + status.toString() + ' ' + error.toString()).css('display', 'block').css('background', '#C00'); ;
+                 }
+             });
+         }
+
+         function SaveAnswer() {
+             $.ajax({
+                 //HTTP request type
+                 type: "POST",
+                 //URI endpoint to call
+                 url: "/Answers/SaveAnswer/",
+                 contentType: 'application/json; charset=utf-8',
+                 data: "{ questionId: 1, answerId:" + $('input:radio[name=radio-choice-1]:checked').val() + "}",
+                 //type of data structure we want to get back
+                 dataType: "json",
+                 // in case of success fire this call back function (remember Ajax is a sync, so set up your call back function to handle the response once you get it.
+                 success: function (data) {
+                     $('.question').html(data[0].Question.Description.toString());
+                     
+                     
+
+                 },
+                 //in case of any error fire this call back function
+                 error: function (req, status, error) {
+
+                     $('.ErrorSummary').text('The request ' + req.toString() + ' went wrong: ' + status.toString() + ' ' + error.toString()).css('display', 'block').css('background', '#C00'); ;
+                 }
+             });
+         }
+
+         $(document).ready(function () {
+             GetQuestion();
+         });
+
+         $('#Vote').click(function() {
+             SaveAnswer(); ;
+         });
+
+         $("#chart").pieChart([
+                        {
+                            label: "BIG Data",
+                            color: ["13", "160", "104"],
+                            value: "2"
+                        },
+                        {
+                            label: "SOA",
+                            color: ["25", "78", "156"],
+                            value: "13"
+                        },
+                        {
+                            label: "Mobile Devices",
+                            color: ["237", "156", "19"],
+                            value: "34"
+                        },
+                        {
+                            label: "BPM",
+                            color: ["237", "87", "19"],
+                            value: "32"
+                        }
+                    ],
+                    {
+                        chartSizePercent: 45,
+                        sliceBorderWidth: 1,
+                        sliceBorderStyle: "#fff",
+                        sliceGradientColour: "#ddd",
+                        maxPullOutDistance: 10,
+                        pullOutFrameStep: 4,
+                        pullOutFrameInterval: 40,
+                        pullOutLabelPadding: 50,
+                        pullOutLabelFont: "bold 14px 'Trebuchet MS', Verdana, sans-serif",
+                        pullOutValueFont: "bold 10px 'Trebuchet MS', Verdana, sans-serif",
+                        pullOutValuePrefix: "",
+                        pullOutValueSuffix: " stemmen",
+                        pullOutShadowColour: "rgba( 0, 0, 0, .5 )",
+                        pullOutShadowOffsetX: 5,
+                        pullOutShadowOffsetY: 5,
+                        pullOutShadowBlur: 5,
+                        pullOutBorderWidth: 1,
+                        pullOutBorderStyle: "#333"
+                    });
+         
+        
+     </script>
+</body>
+</html>
+

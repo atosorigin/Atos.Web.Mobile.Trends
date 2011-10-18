@@ -1,0 +1,23 @@
+@model Atos.Web.Mobile.Trends.Models.Question
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Question</legend>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">@Model.Description</div>
+
+    <div class="display-label">Answers</div>
+    <div class="display-field">@(Model.Answers == null ? "None" : Model.Answers.Count.ToString())</div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.QuestionId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

@@ -1,0 +1,44 @@
+@model Atos.Web.Mobile.Trends.Models.Browser
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Name)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessageFor(model => model.Name)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Version)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Version)
+    @Html.ValidationMessageFor(model => model.Version)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Platform)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Platform)
+    @Html.ValidationMessageFor(model => model.Platform)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.ClientIP)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.ClientIP)
+    @Html.ValidationMessageFor(model => model.ClientIP)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.TimeStamp)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.TimeStamp)
+    @Html.ValidationMessageFor(model => model.TimeStamp)
+</div>
+

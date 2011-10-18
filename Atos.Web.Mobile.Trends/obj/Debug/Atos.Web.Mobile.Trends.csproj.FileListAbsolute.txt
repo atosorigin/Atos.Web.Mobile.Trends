@@ -1,0 +1,7 @@
+D:\Sources\Atos\Atos.Web.Mobile.Trends\bin\Atos.Web.Mobile.Trends.dll
+D:\Sources\Atos\Atos.Web.Mobile.Trends\bin\Atos.Web.Mobile.Trends.pdb
+D:\Sources\Atos\Atos.Web.Mobile.Trends\bin\EntityFramework.dll
+D:\Sources\Atos\Atos.Web.Mobile.Trends\bin\EntityFramework.xml
+D:\Sources\Atos\Atos.Web.Mobile.Trends\obj\Debug\ResolveAssemblyReference.cache
+D:\Sources\Atos\Atos.Web.Mobile.Trends\obj\Debug\Atos.Web.Mobile.Trends.dll
+D:\Sources\Atos\Atos.Web.Mobile.Trends\obj\Debug\Atos.Web.Mobile.Trends.pdb

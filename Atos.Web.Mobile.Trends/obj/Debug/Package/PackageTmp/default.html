@@ -1,0 +1,111 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <title>Atos Competence Bazar - Trends</title>
+        <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+	    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
+        <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	    <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
+        <script src="scripts/chart.js"></script>
+    </head>
+    <body>
+    <div data-role="page" id="vote">
+        <header data-role="header" data-theme="b"><h1>Belangrijkste trends voor 2012</h1></header>
+        <article data-role="content" data-theme="d">
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+    	            <legend>Kies de belangrijkste trend:</legend>
+         	        <input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
+         	        <label for="radio-choice-1">Cloud</label>
+
+         	        <input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
+         	        <label for="radio-choice-2">SOA</label>
+
+         	        <input type="radio" name="radio-choice-1" id="radio-choice-3" value="choice-3"  />
+         	        <label for="radio-choice-3">Mobile devices</label>
+
+         	        <input type="radio" name="radio-choice-1" id="radio-choice-4" value="choice-4"  />
+         	        <label for="radio-choice-4">BPM</label>
+                </fieldset>
+            </div>
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup" class="ui-grid-b">
+                    <legend></legend>
+                    <a href="#results" data-role="button" data-theme="b">Stem</a>
+                    <!--<button type="submit" data-theme="b">Stem</button>-->
+                </fieldset>
+            </div>
+        </article>
+        <footer data-role="footer" class="footer-docs" data-theme="b"><p>&copy; 2011 - Atos Nederland B.V.</p></footer>
+    </div>
+    <div data-role="page" id="results">
+        <header data-role="header" data-theme="b"><h1>Belangrijkste trends voor 2012</h1></header>
+        <article data-role="content" data-theme="d">
+            <!--<div data-role="fieldcontain">-->
+                <fieldset data-role="controlgroup">
+                    <legend>De uitslag</legend>
+                    <canvas id="chart" height="320" width="480"></canvas>
+                    <dl>
+                        <dt style="color: #0DA068;">Cloud</dt>
+                        <dd>18 stemmen (19%)</dd>
+                        <dt style="color: #194E9C;">SOA</dt>
+                        <dd>13 stemmen (13%)</dd>
+                        <dt style="color:#ED9C13;">Mobile devices</dt>
+                        <dd>34 stemmen (35%)</dd>
+                        <dt style="color:#ED5713;">BPM</dt>
+                        <dd>32 stemmen (33%)</dd>
+                    </dl>
+                </fieldset>
+            <!--</div>-->
+        </article>
+        <footer data-role="footer" class="footer-docs" data-theme="b"><p>&copy; 2011 - Atos Nederland B.V.</p></footer>
+    </div>
+    <script>
+
+        $("#chart").pieChart([
+                        {
+                            label: "Cloud",
+                            color: ["13", "160", "104"],
+                            value: "18"
+                        },
+                        {
+                            label: "SOA",
+                            color: ["25", "78", "156"],
+                            value: "13"
+                        },
+                        {
+                            label: "Mobile Devices",
+                            color: ["237", "156", "19"],
+                            value: "34"
+                        },
+                        {
+                            label: "BPM",
+                            color: ["237", "87", "19"],
+                            value: "32"
+                        }
+                    ],
+                    {
+                        chartSizePercent: 45,
+                        sliceBorderWidth: 1,
+                        sliceBorderStyle: "#fff",
+                        sliceGradientColour: "#ddd",
+                        maxPullOutDistance: 10,
+                        pullOutFrameStep: 4,
+                        pullOutFrameInterval: 40,
+                        pullOutLabelPadding: 50,
+                        pullOutLabelFont: "bold 14px 'Trebuchet MS', Verdana, sans-serif",
+                        pullOutValueFont: "bold 10px 'Trebuchet MS', Verdana, sans-serif",
+                        pullOutValuePrefix: "",
+                        pullOutValueSuffix: " stemmen",
+                        pullOutShadowColour: "rgba( 0, 0, 0, .5 )",
+                        pullOutShadowOffsetX: 5,
+                        pullOutShadowOffsetY: 5,
+                        pullOutShadowBlur: 5,
+                        pullOutBorderWidth: 1,
+                        pullOutBorderStyle: "#333"
+                    });
+     </script>
+</body>
+</html>
+
