@@ -27,24 +27,11 @@
     <div data-role="page" id="results">
         <header data-role="header" data-theme="b"><h1><img src="http://pomtiedom.com/images/atos.png" alt="Atos" title="Atos" /></h1></header>
         <article data-role="content" data-theme="d">
-            <!--<div data-role="fieldcontain">-->
-                <fieldset data-role="controlgroup">
+            <div data-role="content" class="ui-body">
+                    <ul data-role="listview" data-inset="true" id="resultlist"></ul>
                     
-                    <ul data-role="
-                    <!--<canvas id="chart" height="320" width="480"></canvas>
-                    <dl>
-                        <dt style="color: #0DA068;">Cloud</dt>
-                        <dd>18 stemmen (19%)</dd>
-                        <dt style="color: #194E9C;">SOA</dt>
-                        <dd>13 stemmen (13%)</dd>
-                        <dt style="color:#ED9C13;">Mobile devices</dt>
-                        <dd>34 stemmen (35%)</dd>
-                        <dt style="color:#ED5713;">BPM</dt>
-                        <dd>32 stemmen (33%)</dd>
-                    </dl>-->
-                </fieldset>
                 <span class="ErrorSummary"></span>
-            <!--</div>-->
+            </div>
         </article>
         <footer data-role="footer" class="footer-docs" data-theme="b"><small>&nbsp;Copyright &copy; 2011 - Atos&trade;. All rights reserved.</small></footer>
     </div>
@@ -100,10 +87,12 @@
                  dataType: "json",
                  // in case of success fire this call back function (remember Ajax is a sync, so set up your call back function to handle the response once you get it.
                  success: function (data) {
-                     $('.question').html(data[0].Question.Description.toString());
-                     $.cookie('voted', 'true');
-
-
+                     //$('.question').html(data[0].Question.Description.toString());
+                     var totalVotes = 0;
+                     $('#resultlist').append('<li data-theme="b" data-role="divider">Trends populariteit</li>');
+                     $(data).each(function (data) { $('#resultlist').append('<li data-theme="d">' + this.Description + '<span class="ui-li-count">' + this.NumberOfChosenAsAnswer + '</span></li>'); totalVotes = totalVotes + this.NumberOfChosenAsAnswer; });
+                     $('#resultlist').append('<li data-theme="a">Totaal aantal stemmen<span class="ui-li-count">' + totalVotes.toString() + '</span></li>');
+                     $('#resultlist').listview('refresh');
                  },
                  //in case of any error fire this call back function
                  error: function (req, status, error) {
@@ -121,50 +110,7 @@
              SaveAnswer(); ;
          });
 
-         $("#chart").pieChart([
-                        {
-                            label: "BIG Data",
-                            color: ["13", "160", "104"],
-                            value: "2"
-                        },
-                        {
-                            label: "SOA",
-                            color: ["25", "78", "156"],
-                            value: "13"
-                        },
-                        {
-                            label: "Mobile Devices",
-                            color: ["237", "156", "19"],
-                            value: "34"
-                        },
-                        {
-                            label: "BPM",
-                            color: ["237", "87", "19"],
-                            value: "32"
-                        }
-                    ],
-                    {
-                        chartSizePercent: 45,
-                        sliceBorderWidth: 1,
-                        sliceBorderStyle: "#fff",
-                        sliceGradientColour: "#ddd",
-                        maxPullOutDistance: 10,
-                        pullOutFrameStep: 4,
-                        pullOutFrameInterval: 40,
-                        pullOutLabelPadding: 50,
-                        pullOutLabelFont: "bold 14px 'Trebuchet MS', Verdana, sans-serif",
-                        pullOutValueFont: "bold 10px 'Trebuchet MS', Verdana, sans-serif",
-                        pullOutValuePrefix: "",
-                        pullOutValueSuffix: " stemmen",
-                        pullOutShadowColour: "rgba( 0, 0, 0, .5 )",
-                        pullOutShadowOffsetX: 5,
-                        pullOutShadowOffsetY: 5,
-                        pullOutShadowBlur: 5,
-                        pullOutBorderWidth: 1,
-                        pullOutBorderStyle: "#333"
-                    });
          
-        
      </script>
 </body>
 </html>
