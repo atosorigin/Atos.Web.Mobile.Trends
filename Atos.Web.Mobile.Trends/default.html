@@ -32,7 +32,7 @@
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup" class="ui-grid-b">
                     <legend></legend>
-                    <a href="#results" data-role="button" data-theme="b" id="Vote">Stem</a>
+                    <a href="#results" data-role="button" data-theme="b" id="castyourvote">Stem</a>
                     <!--<button type="submit" data-theme="b">Stem</button>-->
                 </fieldset>
             </div>
@@ -83,7 +83,7 @@
                  success: function (data) {
                      $('.question').html(data[0].Question.Description.toString());
                      $(data).each(function (data) { $('#ListOfAnswers').append('<input type="radio" name="radio-choice-1" id="radio-choice-' + this.Id + '" value="' + this.Id + '" /><label for="radio-choice-' + this.Id + '">' + this.Description + '</label>'); });
-                    
+
                  },
                  //in case of any error fire this call back function
                  error: function (req, status, error) {
@@ -94,6 +94,7 @@
                      // As you can see I use jQuery chaining to also define the 2 css attributes for the div to set it visible and with a background color
                      alert('The request ' + req.toString() + ' went wrong: ' + status.toString());
                      $('.ErrorSummary').text('The request ' + req.toString() + ' went wrong: ' + status.toString() + ' ' + error.toString()).css('display', 'block').css('background', '#C00'); ;
+                     $('#vote').refresh();
                  }
              });
          }
@@ -127,7 +128,7 @@
              GetQuestion();
          });
 
-         $('#Vote').click(function() {
+         $('#castyourvote').click(function() {
              SaveAnswer(); ;
          });
 
