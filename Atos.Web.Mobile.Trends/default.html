@@ -74,7 +74,7 @@
                  success: function (data) {
                      $('.question').html(data[0].Question.Description.toString());
                      $(data).each(function (data) { $('#ListOfAnswers').append('<input type="radio" name="radio-choice-1" id="radio-choice-' + this.Id + '" value="' + this.Id + '" /><label for="radio-choice-' + this.Id + '">' + this.Description + '</label>'); });
-                     $('#ListOfAnswers').refresh();
+                     $('#ListOfAnswers').trigger('create');
                      //$('#vote').refresh();
                  },
                  //in case of any error fire this call back function
