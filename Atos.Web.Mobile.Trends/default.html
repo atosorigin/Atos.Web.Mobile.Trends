@@ -7,7 +7,7 @@
 	    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
         <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	    <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
-        <script src="scripts/chart.js"></script>
+        
     </head>
     <body>
     <div data-role="page" id="vote">
@@ -15,31 +15,22 @@
         <article data-role="content" data-theme="d">
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup" id="ListOfAnswers">
-    	            
-         	        
+    	           
                 </fieldset>
+                <a href="#results" data-role="button" data-theme="b" id="castyourvote">Stem</a>
                 <span class="ErrorSummary"></span>
             </div>
-            <div data-role="fieldcontain">
-                <fieldset data-role="controlgroup" class="ui-grid-b">
-                    <legend></legend>
-                    <a href="#results" data-role="button" data-theme="b" id="castyourvote">Stem</a>
-                    
-                </fieldset>
-            </div>
+            
         </article>
         <footer data-role="footer" class="footer-docs" data-theme="b"><small>&nbsp;Copyright &copy; 2011 - Atos&trade;. All rights reserved.</small></footer>
     </div>
     <div data-role="page" id="results">
-        <header data-role="header" data-theme="b"><h1>Belangrijkste trends voor 2012</h1></header>
+        <header data-role="header" data-theme="b"><h1><img src="http://pomtiedom.com/images/atos.png" alt="Atos" title="Atos" /></h1></header>
         <article data-role="content" data-theme="d">
             <!--<div data-role="fieldcontain">-->
                 <fieldset data-role="controlgroup">
-                    <legend class="question"></legend>
-                    <table id="result">
                     
-                    </table>
-                    
+                    <ul data-role="
                     <!--<canvas id="chart" height="320" width="480"></canvas>
                     <dl>
                         <dt style="color: #0DA068;">Cloud</dt>
@@ -72,11 +63,16 @@
                  dataType: "json",
                  // in case of success fire this call back function (remember Ajax is a sync, so set up your call back function to handle the response once you get it.
                  success: function (data) {
-                     
-                     $('#ListOfAnswers').append('<legend class="question">' + data[0].Question.Description.toString() +'</legend>');
-                     $(data).each(function (data) { $('#ListOfAnswers').append('<input type="radio" name="radio-choice-1" id="radio-choice-' + this.Id + '" value="' + this.Id + '" />\n<label for="radio-choice-' + this.Id + '">' + this.Description + '</label>\n'); });
-                     $('#ListOfAnswers').trigger('create');
-                     //$('#vote').refresh();
+//                     alert($.cookie('voted').toString());
+//                     if ($.cookie('voted') == 'true') {
+//                         alert('voted');
+//                         $('#castyourvote').attr('disabled', 'disabled');
+//                     }
+//                     else {
+                         $('#ListOfAnswers').append('<legend class="question">' + data[0].Question.Description.toString() + '</legend>');
+                         $(data).each(function (data) { $('#ListOfAnswers').append('<input type="radio" name="radio-choice-1" id="radio-choice-' + this.Id + '" value="' + this.Id + '" />\n<label for="radio-choice-' + this.Id + '">' + this.Description + '</label>\n'); });
+                         $('#ListOfAnswers').trigger('create');
+//                     }
                  },
                  //in case of any error fire this call back function
                  error: function (req, status, error) {
@@ -105,8 +101,8 @@
                  // in case of success fire this call back function (remember Ajax is a sync, so set up your call back function to handle the response once you get it.
                  success: function (data) {
                      $('.question').html(data[0].Question.Description.toString());
-                     
-                     
+                     $.cookie('voted', 'true');
+
 
                  },
                  //in case of any error fire this call back function
