@@ -131,5 +131,21 @@ namespace Atos.Web.Mobile.Trends.Controllers
             }
             return new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet, Data = answers }; 
         }
+
+        public JsonResult GetAnswers(string questionId)
+        {
+            int id;
+
+            var answers = new Object();
+
+            if (!String.IsNullOrEmpty(questionId))
+            {
+                id = Convert.ToInt32(questionId);
+
+
+                answers = context.Answers.Where(q => q.QuestionId == id).OrderByDescending(q => q.NumberOfChosenAsAnswer).ToList();
+            }
+            return new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet, Data = answers };
+        }
     }
 }
