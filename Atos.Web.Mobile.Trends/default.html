@@ -15,9 +15,10 @@
         <article data-role="content" data-theme="d">
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup" id="ListOfAnswers">
-    	            <legend class="question" data-position="fixed"></legend>
-         	        <span class="ErrorSummary"></span>
+    	            <legend class="question"></legend>
+         	        
                 </fieldset>
+                <span class="ErrorSummary"></span>
             </div>
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup" class="ui-grid-b">
@@ -73,6 +74,7 @@
                  success: function (data) {
                      $('.question').html(data[0].Question.Description.toString());
                      $(data).each(function (data) { $('#ListOfAnswers').append('<input type="radio" name="radio-choice-1" id="radio-choice-' + this.Id + '" value="' + this.Id + '" /><label for="radio-choice-' + this.Id + '">' + this.Description + '</label>'); });
+                     $('#ListOfAnswers').page();
                      $('#vote').refresh();
                  },
                  //in case of any error fire this call back function
