@@ -1,146 +1,131 @@
 ﻿<!doctype html>
 <html>
     <head>
-        <title>Atos Competence Bazar - Trends</title>
+        <title>Atos Competence Bazaar - Trends 2012</title>
         <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1"> 
 	    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
         <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	    <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
-        
+        <script src="Scripts/jquery.cookie.js"></script>
     </head>
     <body>
-    <div data-role="page" id="vote">
-        <header data-role="header" data-theme="b"><h1><img src="http://pomtiedom.com/images/atos.png" alt="Atos" title="Atos" /></h1></header>
-        <article data-role="content" data-theme="d">
-            <div data-role="fieldcontain">
-                <fieldset data-role="controlgroup" id="ListOfAnswers">
-    	           
-                </fieldset>
-                <a href="#results" data-role="button" data-theme="b" id="castyourvote">Stem</a>
-                <span class="ErrorSummary"></span>
-            </div>
-            
-        </article>
-        <footer data-role="footer" class="footer-docs" data-theme="b"><small>&nbsp;Copyright &copy; 2011 - Atos&trade;. All rights reserved.</small></footer>
-    </div>
-    <div data-role="page" id="results">
-        <header data-role="header" data-theme="b"><h1><img src="http://pomtiedom.com/images/atos.png" alt="Atos" title="Atos" /></h1></header>
-        <article data-role="content" data-theme="d">
-            <div data-role="content" class="ui-body">
+        <div data-role="page" id="vote">
+            <header data-role="header" data-theme="b">
+                <h1>
+                    <img src="http://pomtiedom.com/images/atos.png" alt="Atos" title="Atos" />
+                </h1>
+            </header>
+            <article data-role="content" data-theme="d">
+                <div data-role="content">
+                    <fieldset data-role="controlgroup" id="ListOfAnswers">
+    	            </fieldset>
+                    <a href="#results" data-role="button" data-theme="b" id="castyourvote">Stem</a>
+                    <span class="ErrorSummary"></span>
+                </div>
+            </article>
+            <footer data-role="footer" class="footer-docs" data-theme="b"><small>&nbsp;Copyright &copy; 2011 - Atos&trade;. All rights reserved.</small></footer>
+        </div>
+        <div data-role="page" id="results">
+            <header data-role="header" data-theme="b">
+                <h1>
+                    <img src="http://pomtiedom.com/images/atos.png" alt="Atos" title="Atos" />
+                </h1>
+            </header>
+            <article data-role="content" data-theme="d">
+                <div data-role="content" class="ui-body">
                     <ul data-role="listview" data-inset="true" id="resultlist"></ul>
-                    
-                <span class="ErrorSummary"></span>
-            </div>
-        </article>
-        <footer data-role="footer" class="footer-docs" data-theme="b"><small>&nbsp;Copyright &copy; 2011 - Atos&trade;. All rights reserved.</small></footer>
-    </div>
-    <script>
-         function GetQuestion() {
-             //From here on it is all jQuery
-             //Using a Ajax Post action to avoid security issues with Get (which is very limited due to possible cross domain scripting!)
-             $.ajax({
-                 //HTTP request type
-                 type: "POST",
-                 //URI endpoint to call
-                 url: "/Questions/GetQuestion/",
-                 contentType: 'application/json; charset=utf-8',
-                 data: "{ id: 1 }",
-                 //type of data structure we want to get back
-                 dataType: "json",
-                 // in case of success fire this call back function (remember Ajax is a sync, so set up your call back function to handle the response once you get it.
-                 success: function (data) {
-//                     alert($.cookie('voted').toString());
-//                     if ($.cookie('voted') == 'true') {
-//                         alert('voted');
-//                         $('#castyourvote').attr('disabled', 'disabled');
-//                     }
-//                     else {
-                         $('#ListOfAnswers').append('<legend class="question">' + data[0].Question.Description.toString() + '</legend>');
-                         $(data).each(function (data) { $('#ListOfAnswers').append('<input type="radio" name="radio-choice-1" id="radio-choice-' + this.Id + '" value="' + this.Id + '" />\n<label for="radio-choice-' + this.Id + '">' + this.Description + '</label>\n'); });
-                         $('#ListOfAnswers').trigger('create');
-//                     }
-                 },
-                 //in case of any error fire this call back function
-                 error: function (req, status, error) {
-                     //set the text of the predefined div with id ErrorSummary to the values of the error response we got
-                     // req = request summary as HTTP request type and endpoint URI
-                     // status = HTTP error code
-                     // error = error description
-                     // As you can see I use jQuery chaining to also define the 2 css attributes for the div to set it visible and with a background color
-                     alert('The request ' + req.toString() + ' went wrong: ' + status.toString());
-                     $('.ErrorSummary').text('The request ' + req.toString() + ' went wrong: ' + status.toString() + ' ' + error.toString()).css('display', 'block').css('background', '#C00'); ;
-                     //$('#vote').refresh();
+                    <span class="ErrorSummary"></span>
+                </div>
+            </article>
+            <footer data-role="footer" class="footer-docs" data-theme="b"><small>&nbsp;Copyright &copy; 2011 - Atos&trade;. All rights reserved.</small></footer>
+        </div>
+        <script>
+             function GetQuestion() {
+                 if ($.cookie('voted')) {
+                     window.location = '#results';
+                     $('.ErrorSummary').text('Je hebt je stem al uitgebracht.');
+                     
+                     
                  }
-             });
-         }
-
-         function SaveAnswer() {
-             $.ajax({
-                 //HTTP request type
-                 type: "POST",
-                 //URI endpoint to call
-                 url: "/Answers/SaveAnswer/",
-                 contentType: 'application/json; charset=utf-8',
-                 data: "{ questionId: 1, answerId:" + $('input:radio[name=radio-choice-1]:checked').val() + "}",
-                 //type of data structure we want to get back
-                 dataType: "json",
-                 // in case of success fire this call back function (remember Ajax is a sync, so set up your call back function to handle the response once you get it.
-                 success: function (data) {
-                     //$('.question').html(data[0].Question.Description.toString());
-                     var totalVotes = 0;
-                     $('#resultlist').empty();
-                     $('#resultlist').append('<li data-theme="b" data-role="divider">Trends populariteit</li>');
-                     $(data).each(function (data) { $('#resultlist').append('<li data-theme="d">' + this.Description + '<span class="ui-li-count">' + this.NumberOfChosenAsAnswer + '</span></li>'); totalVotes = totalVotes + this.NumberOfChosenAsAnswer; });
-                     $('#resultlist').append('<li data-theme="a">Totaal aantal stemmen<span class="ui-li-count">' + totalVotes.toString() + '</span></li>');
-                     $('#resultlist').listview('refresh');
-                 },
-                 //in case of any error fire this call back function
-                 error: function (req, status, error) {
-
-                     $('.ErrorSummary').text('The request ' + req.toString() + ' went wrong: ' + status.toString() + ' ' + error.toString()).css('display', 'block').css('background', '#C00'); ;
+                 else {
+                     $.ajax({
+                         type: "POST",
+                         url: "/Questions/GetQuestion/",
+                         contentType: 'application/json; charset=utf-8',
+                         data: "{ id: 1 }",
+                         dataType: "json",
+                         success: function (data) {
+                                 $('#ListOfAnswers').append('<legend class="question">' + data[0].Question.Description.toString() + '</legend>');
+                                 $(data).each(function (data) { $('#ListOfAnswers').append('<input type="radio" name="radio-choice-1" id="radio-choice-' + this.Id + '" value="' + this.Id + '" />\n<label for="radio-choice-' + this.Id + '">' + this.Description + '</label>\n'); });
+                                 $('#ListOfAnswers').trigger('create');
+                         },
+                         error: function (req, status, error) {
+                             alert('The request ' + req.toString() + ' went wrong: ' + status.toString());
+                             $('.ErrorSummary').text('The request ' + req.toString() + ' went wrong: ' + status.toString() + ' ' + error.toString()).css('display', 'block').css('background', '#C00'); ;
+                         }
+                     });
                  }
-             });
-         }
+             }
 
-         function GetAnswers() {
-             $.ajax({
-                 //HTTP request type
-                 type: "POST",
-                 //URI endpoint to call
-                 url: "/Answers/GetAnswers/",
-                 contentType: 'application/json; charset=utf-8',
-                 data: "{ questionId: 1 }",
-                 //type of data structure we want to get back
-                 dataType: "json",
-                 // in case of success fire this call back function (remember Ajax is a sync, so set up your call back function to handle the response once you get it.
-                 success: function (data) {
-                     //$('.question').html(data[0].Question.Description.toString());
-                     var totalVotes = 0;
-                     $('#resultlist').append('<li data-theme="b" data-role="divider">Trends populariteit</li>');
-                     $(data).each(function (data) { $('#resultlist').append('<li data-theme="d">' + this.Description + '<span class="ui-li-count">' + this.NumberOfChosenAsAnswer + '</span></li>'); totalVotes = totalVotes + this.NumberOfChosenAsAnswer; });
-                     $('#resultlist').append('<li data-theme="a">Totaal aantal stemmen<span class="ui-li-count">' + totalVotes.toString() + '</span></li>');
-                     $('#resultlist').listview('refresh');
-                 },
-                 //in case of any error fire this call back function
-                 error: function (req, status, error) {
-
-                     $('.ErrorSummary').text('The request ' + req.toString() + ' went wrong: ' + status.toString() + ' ' + error.toString()).css('display', 'block').css('background', '#C00'); ;
+             function SaveAnswer() {
+                 if ($.cookie('voted')) {
+                     $('.ErrorSummary').text('Je hebt je stem al uitgebracht.');
+                     GetAnswers();
                  }
+                 else {
+                     $.ajax({
+                         type: "POST",
+                         url: "/Answers/SaveAnswer/",
+                         contentType: 'application/json; charset=utf-8',
+                         data: "{ questionId: 1, answerId:" + $('input:radio[name=radio-choice-1]:checked').val() + "}",
+                         dataType: "json",
+                         success: function (data) {
+                             var totalVotes = 0;
+                             $('#resultlist').empty();
+                             $('#resultlist').append('<li data-theme="b" data-role="divider">Trends populariteit</li>');
+                             $(data).each(function (data) { $('#resultlist').append('<li data-theme="d">' + this.Description + '<span class="ui-li-count">' + this.NumberOfChosenAsAnswer + '</span></li>'); totalVotes = totalVotes + this.NumberOfChosenAsAnswer; });
+                             $('#resultlist').append('<li data-theme="a">Totaal aantal stemmen<span class="ui-li-count">' + totalVotes.toString() + '</span></li>');
+                             $('#resultlist').listview('refresh');
+                             $.cookie('voted', 'true');
+                         },
+                         error: function (req, status, error) {
+                             $('.ErrorSummary').text('The request ' + req.toString() + ' went wrong: ' + status.toString() + ' ' + error.toString()).css('display', 'block').css('background', '#C00'); ;
+                         }
+                     });
+                }
+
+             }
+
+             function GetAnswers() {
+                 $.ajax({
+                     type: "POST",
+                     url: "/Answers/GetAnswers/",
+                     contentType: 'application/json; charset=utf-8',
+                     data: "{ questionId: 1 }",
+                     dataType: "json",
+                     success: function (data) {
+                         var totalVotes = 0;
+                         $('#resultlist').append('<li data-theme="b" data-role="divider">Trends populariteit</li>');
+                         $(data).each(function (data) { $('#resultlist').append('<li data-theme="d">' + this.Description + '<span class="ui-li-count">' + this.NumberOfChosenAsAnswer + '</span></li>'); totalVotes = totalVotes + this.NumberOfChosenAsAnswer; });
+                         $('#resultlist').append('<li data-theme="a">Totaal aantal stemmen<span class="ui-li-count">' + totalVotes.toString() + '</span></li>');
+                         $('#resultlist').listview('refresh');
+                     },
+                     error: function (req, status, error) {
+                         $('.ErrorSummary').text('The request ' + req.toString() + ' went wrong: ' + status.toString() + ' ' + error.toString()).css('display', 'block').css('background', '#C00'); ;
+                     }
+                 });
+             }
+
+             $(document).ready(function () {
+                 GetQuestion();
+                 GetAnswers();
              });
-         }
 
-         $(document).ready(function () {
-             GetQuestion();
-             GetAnswers();
-         });
-
-         $('#castyourvote').click(function() {
-             SaveAnswer(); ;
-         });
-
-         
-     </script>
-</body>
+             $('#castyourvote').click(function() {
+                 SaveAnswer(); ;
+             });
+        </script>
+    </body>
 </html>
 
