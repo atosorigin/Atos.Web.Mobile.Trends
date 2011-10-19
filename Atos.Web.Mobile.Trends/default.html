@@ -15,7 +15,7 @@
         <article data-role="content" data-theme="d">
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup" id="ListOfAnswers">
-    	            <legend class="question"></legend>
+    	            
          	        
                 </fieldset>
                 <span class="ErrorSummary"></span>
@@ -72,7 +72,8 @@
                  dataType: "json",
                  // in case of success fire this call back function (remember Ajax is a sync, so set up your call back function to handle the response once you get it.
                  success: function (data) {
-                     $('.question').html(data[0].Question.Description.toString());
+                     alert(data[0].Question.Description.toString());
+                     $('#ListOfAnswers').append('<legend class="question">' + data[0].Question.Description.toString() +'</legend>');
                      $(data).each(function (data) { $('#ListOfAnswers').append('<input type="radio" name="radio-choice-1" id="radio-choice-' + this.Id + '" value="' + this.Id + '" /><label for="radio-choice-' + this.Id + '">' + this.Description + '</label>'); });
                      $('#ListOfAnswers').trigger('create');
                      //$('#vote').refresh();
