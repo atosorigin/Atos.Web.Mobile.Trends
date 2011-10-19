@@ -89,6 +89,7 @@
                  success: function (data) {
                      //$('.question').html(data[0].Question.Description.toString());
                      var totalVotes = 0;
+                     $('#resultlist').empty();
                      $('#resultlist').append('<li data-theme="b" data-role="divider">Trends populariteit</li>');
                      $(data).each(function (data) { $('#resultlist').append('<li data-theme="d">' + this.Description + '<span class="ui-li-count">' + this.NumberOfChosenAsAnswer + '</span></li>'); totalVotes = totalVotes + this.NumberOfChosenAsAnswer; });
                      $('#resultlist').append('<li data-theme="a">Totaal aantal stemmen<span class="ui-li-count">' + totalVotes.toString() + '</span></li>');
