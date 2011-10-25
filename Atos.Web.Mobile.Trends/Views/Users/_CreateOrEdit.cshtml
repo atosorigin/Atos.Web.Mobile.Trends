@@ -1,0 +1,63 @@
+@model Atos.Web.Mobile.Trends.Models.User
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Gender)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Gender)
+    @Html.ValidationMessageFor(model => model.Gender)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Region)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Region)
+    @Html.ValidationMessageFor(model => model.Region)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Browser)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Browser)
+    @Html.ValidationMessageFor(model => model.Browser)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.BrowserVersion)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.BrowserVersion)
+    @Html.ValidationMessageFor(model => model.BrowserVersion)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Platform)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Platform)
+    @Html.ValidationMessageFor(model => model.Platform)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.IPAddress)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.IPAddress)
+    @Html.ValidationMessageFor(model => model.IPAddress)
+</div>
+
+<div class="editor-label">
+    Answer
+</div>
+<div class="editor-field">
+    @Html.DropDownListFor(model => model.AnswerId, ((IEnumerable<Atos.Web.Mobile.Trends.Models.Answer>)ViewBag.PossibleAnswers).Select(option => new SelectListItem {
+        Text = Html.DisplayTextFor(_ => option).ToString(), 
+        Value = option.Id.ToString(),
+        Selected = (Model != null) && (option.Id == Model.AnswerId)
+    }), "Choose...")
+    @Html.ValidationMessageFor(model => model.AnswerId)
+</div>

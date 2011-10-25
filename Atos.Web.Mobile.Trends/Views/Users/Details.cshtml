@@ -1,0 +1,35 @@
+@model Atos.Web.Mobile.Trends.Models.User
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>User</legend>
+
+    <div class="display-label">Gender</div>
+    <div class="display-field">@Model.Gender</div>
+
+    <div class="display-label">Region</div>
+    <div class="display-field">@Model.Region</div>
+
+    <div class="display-label">Browser</div>
+    <div class="display-field">@Model.Browser</div>
+
+    <div class="display-label">BrowserVersion</div>
+    <div class="display-field">@Model.BrowserVersion</div>
+
+    <div class="display-label">Platform</div>
+    <div class="display-field">@Model.Platform</div>
+
+    <div class="display-label">IPAddress</div>
+    <div class="display-field">@Model.IPAddress</div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

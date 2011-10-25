@@ -22,5 +22,7 @@ namespace Atos.Web.Mobile.Trends.Models
         public DbSet<Atos.Web.Mobile.Trends.Models.Question> Questions { get; set; }
 
         public DbSet<Atos.Web.Mobile.Trends.Models.Browser> Browsers { get; set; }
+
+        public DbSet<Atos.Web.Mobile.Trends.Models.User> Users { get; set; }
     }
 }

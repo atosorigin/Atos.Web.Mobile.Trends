@@ -8,6 +8,7 @@
         <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	    <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
         <script src="Scripts/jquery.cookie.js"></script>
+        <script src="Scripts/browserdetect.js"></script>
     </head>
     <body>
         <div data-role="page" id="vote">
@@ -41,19 +42,17 @@
             <footer data-role="footer" class="footer-docs" data-theme="b"><small>&nbsp;Copyright &copy; 2011 - Atos&trade;. All rights reserved.</small></footer>
         </div>
         <script>
-             function GetQuestion() {
+             function GetQuestion(questionId) {
                  if ($.cookie('voted')) {
                      window.location = '#results';
                      $('.ErrorSummary').text('Je hebt je stem al uitgebracht.');
-                     
-                     
                  }
                  else {
                      $.ajax({
                          type: "POST",
                          url: "/Questions/GetQuestion/",
                          contentType: 'application/json; charset=utf-8',
-                         data: "{ id: 1 }",
+                         data: "{ id: " + questionId + " }",
                          dataType: "json",
                          success: function (data) {
                                  $('#ListOfAnswers').append('<legend class="question">' + data[0].Question.Description.toString() + '</legend>');
@@ -68,17 +67,17 @@
                  }
              }
 
-             function SaveAnswer() {
+             function SaveAnswer(questionId) {
                  if ($.cookie('voted')) {
                      $('.ErrorSummary').text('Je hebt je stem al uitgebracht.');
-                     GetAnswers();
+                     GetAnswers(1);
                  }
                  else {
                      $.ajax({
                          type: "POST",
                          url: "/Answers/SaveAnswer/",
                          contentType: 'application/json; charset=utf-8',
-                         data: "{ questionId: 1, answerId:" + $('input:radio[name=radio-choice-1]:checked').val() + "}",
+                         data: "{ questionId: " + questionId + ", answerId:" + $('input:radio[name=radio-choice-1]:checked').val() + "}",
                          dataType: "json",
                          success: function (data) {
                              var totalVotes = 0;
@@ -87,7 +86,9 @@
                              $(data).each(function (data) { $('#resultlist').append('<li data-theme="d">' + this.Description + '<span class="ui-li-count">' + this.NumberOfChosenAsAnswer + '</span></li>'); totalVotes = totalVotes + this.NumberOfChosenAsAnswer; });
                              $('#resultlist').append('<li data-theme="a">Totaal aantal stemmen<span class="ui-li-count">' + totalVotes.toString() + '</span></li>');
                              $('#resultlist').listview('refresh');
+                             SaveUserClientDetails($('input:radio[name=radio-choice-1]:checked').val())
                              $.cookie('voted', 'true');
+                             
                          },
                          error: function (req, status, error) {
                              $('.ErrorSummary').text('The request ' + req.toString() + ' went wrong: ' + status.toString() + ' ' + error.toString()).css('display', 'block').css('background', '#C00'); ;
@@ -97,17 +98,17 @@
 
              }
 
-             function GetAnswers() {
+             function GetAnswers(questionId) {
                  $.ajax({
                      type: "POST",
                      url: "/Answers/GetAnswers/",
                      contentType: 'application/json; charset=utf-8',
-                     data: "{ questionId: 1 }",
+                     data: "{ questionId: " + questionId + " }",
                      dataType: "json",
                      success: function (data) {
                          var totalVotes = 0;
                          $('#resultlist').append('<li data-theme="b" data-role="divider">Trends populariteit</li>');
-                         $(data).each(function (data) { $('#resultlist').append('<li data-theme="d">' + this.Description + '<span class="ui-li-count">' + this.NumberOfChosenAsAnswer + '</span></li>'); totalVotes = totalVotes + this.NumberOfChosenAsAnswer; });
+                         $(data).each(function (data) { $('#resultlist').append('<li data-theme="d">' + this.Description + '<span data-theme="b" class="ui-li-count">' + this.NumberOfChosenAsAnswer + '</span></li>'); totalVotes = totalVotes + this.NumberOfChosenAsAnswer; });
                          $('#resultlist').append('<li data-theme="a">Totaal aantal stemmen<span class="ui-li-count">' + totalVotes.toString() + '</span></li>');
                          $('#resultlist').listview('refresh');
                      },
@@ -118,13 +119,36 @@
              }
 
              $(document).ready(function () {
-                 GetQuestion();
-                 GetAnswers();
+                 GetQuestion(1);
+                 GetAnswers(1);
+                 
              });
 
              $('#castyourvote').click(function() {
-                 SaveAnswer(); ;
+                 SaveAnswer(1); ;
              });
+
+             function SaveUserClientDetails(answerId) 
+             {
+                 var userId = 0;
+                 var region;
+
+                 $.ajax({
+                     type: "POST",
+                     url: "/Users/SaveUser/",
+                     contentType: 'application/json; charset=utf-8',
+                     data: "{ userId: " + userId + ", region: 'x', browser: '" + BrowserDetect.browser.toString() + "', browserVersion: '" + BrowserDetect.version.toString() + "', platform: '" + BrowserDetect.OS.toString() + "', answerId: " + answerId + "  }",
+                     dataType: "json",
+                     success: function (data) {
+                         $('.ErrorSummary').text('Je stem is opgeslagen.');
+                     },
+                     error: function (req, status, error) {
+                         $('.ErrorSummary').text('The request ' + req.toString() + ' went wrong: ' + status.toString() + ' ' + error.toString()).css('display', 'block').css('background', '#C00'); ;
+                     }
+                 });
+//                 return userId;
+             }
+                          
         </script>
     </body>
 </html>

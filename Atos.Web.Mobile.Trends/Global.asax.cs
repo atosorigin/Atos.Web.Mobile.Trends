@@ -36,7 +36,7 @@ namespace Atos.Web.Mobile.Trends
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
             
-            Database.SetInitializer<Atos.Web.Mobile.Trends.Models.AtosWebMobileTrendsContext>(null);
+            //Database.SetInitializer<Atos.Web.Mobile.Trends.Models.AtosWebMobileTrendsContext>(null);
 
         }
     }
